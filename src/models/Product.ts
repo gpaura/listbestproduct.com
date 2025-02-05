@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { Document } from "mongoose";
+import { ProductDocument } from "@/types";
 
 const productSchema = new Schema<ProductDocument>({
   name: { type: String, required: true },
@@ -10,24 +10,11 @@ const productSchema = new Schema<ProductDocument>({
   affiliateLinks: {
     amazon: { type: String, required: true },
     walmart: { type: String },
+    bestbuy: { type: String },
   },
   features: [{ type: String }],
   rating: { type: Number, min: 0, max: 5 },
+  lastUpdated: { type: Date, default: Date.now },
 });
 
 export const Product = model<ProductDocument>("Product", productSchema);
-
-export type ProductDocument = {
-  _id: string;
-  name: string;
-  category: string;
-  price: number;
-  image: string;
-  description: string;
-  affiliateLinks: {
-    amazon: string;
-    walmart?: string;
-  };
-  features?: string[];
-  rating?: number;
-} & Document;

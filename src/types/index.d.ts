@@ -10,9 +10,17 @@ export interface ProductType {
   affiliateLinks: {
     amazon: string;
     walmart?: string;
+    bestbuy?: string;
   };
   features: string[];
   rating: number;
+  lastUpdated: Date;
+}
+
+export interface CategoryType {
+  name: string;
+  slug: string;
+  description: string;
 }
 
 export type ProductDocument = ProductType & Document;

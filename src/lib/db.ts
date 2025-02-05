@@ -2,15 +2,16 @@ import mongoose, { Mongoose } from "mongoose";
 
 const MONGODB_URI = process.env.MONGODB_URI!;
 
-// Inicialize corretamente o cache
-interface GlobalWithMongoose extends NodeJS.Global {
-  mongoose: {
-    conn: Mongoose | null;
-    promise: Promise<Mongoose> | null;
-  };
+/* eslint-disable no-var */
+declare global {
+  var mongoose: MongooseCache;
 }
+/* eslint-enable no-var */
 
-declare const global: GlobalWithMongoose;
+interface MongooseCache {
+  conn: Mongoose | null;
+  promise: Promise<Mongoose> | null;
+}
 
 let cached = global.mongoose;
 
@@ -22,18 +23,10 @@ async function dbConnect(): Promise<Mongoose> {
   if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI).then((mongoose) => {
-      return mongoose;
-    });
+    cached.promise = mongoose.connect(MONGODB_URI).then((mongoose) => mongoose);
   }
 
-  try {
-    cached.conn = await cached.promise;
-  } catch (e) {
-    cached.promise = null;
-    throw e;
-  }
-
+  cached.conn = await cached.promise;
   return cached.conn;
 }
 
