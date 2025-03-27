@@ -1,18 +1,14 @@
+// tailwind.config.ts
 import type { Config } from "tailwindcss";
 
-export default {
-  content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+export default <Config>{
+  content: ["./src/**/*.{js,ts,jsx,tsx}", "./app/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
-    },
+    extend: {},
   },
-  plugins: [],
-} satisfies Config;
+  plugins: [
+    // If daisyUI does not provide an ES module export, we disable the rule for this line.
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    require("daisyui"),
+  ],
+};
